@@ -4,11 +4,10 @@ import requests
 import re
 import MySQLdb
 from bs4 import BeautifulSoup
-import rate_tool.rate_tool as tool
 
 def home(request):
     return render(request, 'fenrir/fenrir.html', {
-        'current_time': str(datetime.now()),
+        'rate_list': getTaiwanBankRate(),
     })
 
 class ExchangeRate:
@@ -43,14 +42,31 @@ def getTaiwanBankRate():
     RealtimeRates = soup.select(
         "td.rate-content-sight.text-right.print_hide")  #取得即期匯率
 
-    cashRateBuy, cashRateSell = tool.GetRateResult(CashRates)
+    cashRateBuy, cashRateSell = getRateResult(CashRates)
 
-    realtimeRateBuy, realtimeRateSell = tool.GetRateResult(RealtimeRates)
+    realtimeRateBuy, realtimeRateSell = getRateResult(RealtimeRates)
 
     rate_list = []
-    
     for i in range(len(countrys)):
         rate_obj = ExchangeRate(countrys[i],cashRateBuy[i],cashRateSell[i],realtimeRateBuy[i],realtimeRateSell[i])
         rate_list.append(rate_obj)
-        
+    
+    return rate_list
+
+def getRateResult(resRates):
+    tmpBuy = []
+    tmpSell = []
+
+    status = 0
+
+    for rate in resRates:
+        if status == 0:
+            tmpBuy.append(rate.text.strip())
+            status = 1
+            continue
+        if status == 1:
+            tmpSell.append(rate.text.strip())
+            status = 0
+            continue
+    return tmpBuy, tmpSell
 
