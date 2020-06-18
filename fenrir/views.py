@@ -2,7 +2,6 @@ from datetime import datetime
 from django.shortcuts import render
 import requests
 import re
-import MySQLdb
 from bs4 import BeautifulSoup
 from .models import Rate
 
@@ -51,7 +50,7 @@ def getTaiwanBankRate():
     for i in range(len(countrys)):
         rate_obj = ExchangeRate(countrys[i],cashRateBuy[i],cashRateSell[i],realtimeRateBuy[i],realtimeRateSell[i])
         rate_list.append(rate_obj)
-        Rate.objects.create(country=countrys[i],cash_rate_buy=cashRateBuy[i],cash_rate_sell=cashRateSell[i],realtime_rate_buy=realtimeRateBuy[i],realtime_rate_sell=realtimeRateSell[i])
+        # Rate.objects.create(country=countrys[i],cash_rate_buy=cashRateBuy[i],cash_rate_sell=cashRateSell[i],realtime_rate_buy=realtimeRateBuy[i],realtime_rate_sell=realtimeRateSell[i])
     
     return rate_list
 
