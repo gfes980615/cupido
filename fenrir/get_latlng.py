@@ -53,7 +53,7 @@ def getLatLongURL(name):
 
 def getLatLong(url):
     try:
-        regex = re.compile('@(.*),1[0-9]+z')
+        regex = re.compile('@(.*),(.*)z')
         match = regex.search(url)
         latlng = match.group(1).split(',')
         lat = latlng[0]
