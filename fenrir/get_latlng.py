@@ -7,7 +7,7 @@ import re
 import threading
 
 options = Options()
-webdriver_path = './chromedriver'
+webdriver_path = './chromedriver.exe'
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('--headless')
 chrome_options.add_argument('--disable-gpu')
